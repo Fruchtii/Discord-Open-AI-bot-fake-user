@@ -1,4 +1,4 @@
-
-discord.py==1.7.3
-openai==0.27.0
+discord.py==2.5.0
+openai==1.63.2
 python-dotenv==0.19.2
+
