@@ -1,168 +1,138 @@
-<h1>Discord OpenAI Bot</h1>
+# discord-fake-user-bot
 
-This Discord bot uses OpenAI's API to generate human-like responses in chat conversations.
+A Discord bot that blends into chat by responding like a real user. Supports **Google Gemini** (free tier) and **OpenAI** as AI providers.
 
-<h2>Features</h2>
+> **Free tier note:** OpenAI no longer allows API access on their free tier. Use Gemini — it's free and works out of the box.
 
-- Responds to messages in a human-like manner
-- Uses OpenAI's GPT model for generating responses
-- Easy to set up and customize
-- reset the bots memory with the discord command !reset
+## Features
 
-<h2>Discord Bot Setup</h2>
+- Responds naturally to messages in any channel it has access to
+- Maintains per-channel conversation history (last 10 messages)
+- Supports Google Gemini (free) and OpenAI (paid)
+- `!reset` command clears the bot's memory for the current channel
+- Auto-deploys to your server on every push to `main` via GitHub Actions
 
-Before installing and running the bot, you need to create a Discord application and bot user:
+---
 
-1. Go to the Discord Developer Portal (https://discord.com/developers/applications).
-2. Click on "New Application" and give your application a name.
-3. Go to the "Bot" tab in the left sidebar and click "Add Bot".
-4. Customize your bot's name and avatar as desired.
-5. Under the "Token" section, click "Copy" to copy your bot token. You'll need this for the config.json file.
-6. In the "Privileged Gateway Intents" section, enable "Message Content Intent".
-7. Go to the "OAuth2" tab in the left sidebar, then select "URL Generator".
-8. In the "Scopes" section, select "bot".
-9. In the "Bot Permissions" section, select the permissions your bot needs (at minimum: "Read Messages/View Channels", "Send Messages", and "Read Message History").
-10. Copy the generated URL at the bottom of the page.
-11. Open this URL in a new tab and select the server you want to add the bot to. You must have the "Manage Server" permission to add bots to a server.
+## Quick Start
 
-Now your Discord bot is set up and added to your server(s).
+### 1. Clone the repo
 
-<h2>Installation</h2>
-
-<h3>Local Installation</h3>
-
-1. Clone this repository:
-
-```
-git clone https://github.com/Fruchtii/Discord-Open-AI-bot-fake-user.git
+```bash
+git clone https://github.com/Fruchtii/discord-fake-user-bot.git
+cd discord-fake-user-bot
 ```
 
-2. Navigate to the project directory:
+### 2. Install dependencies
 
-```
-cd Discord-Open-AI-bot-fake-user
-```
-
-3. Install the required packages:
-
-```
+```bash
 pip install -r requirements.txt
 ```
 
-4. Create a config.json file with your Discord bot token and OpenAI API key (see Configuration section)
+### 3. Configure
 
-5. Run the bot:
+Edit `config.json`:
 
-```
-python bot.py
-```
-
-<h2>Configuration</h2>
-
-Create a config.json file in the root directory with the following structure:
-
-```
+```json
 {
   "discord_token": "YOUR_DISCORD_BOT_TOKEN",
-  "openai_api_key": "YOUR_OPENAI_API_KEY"
+  "provider": "gemini",
+  "openai_api_key": "YOUR_OPENAI_API_KEY",
+  "gemini_api_key": "YOUR_GEMINI_API_KEY"
 }
 ```
 
-Replace YOUR_DISCORD_BOT_TOKEN with the token you copied in step 5 of the Discord Bot Setup.
-Replace YOUR_OPENAI_API_KEY with your OpenAI API key. If you don't have one, sign up at OpenAI (https://beta.openai.com/signup/) and create an API key.
+Set `"provider"` to `"gemini"` or `"openai"`.
 
-<h2>Usage</h2>
+- **Gemini API key (free):** [aistudio.google.com](https://aistudio.google.com) → Get API key
+- **OpenAI API key:** [platform.openai.com](https://platform.openai.com) → API keys (paid tier required)
 
-The bot will respond to messages in channels it has access to. It uses OpenAI's API to generate human-like responses based on the conversation context.
+### 4. Run
 
-<h2>Deployment on DigitalOcean</h2>
-
-To deploy this bot on DigitalOcean, you can either use SSH or the DigitalOcean console on the website:
-
-1. Create a DigitalOcean account if you don't have one.
-
-2. Create a new Droplet:
-   - Choose an image: Ubuntu 20.04 (LTS) x64
-   - Choose a plan: Basic (cheapest option should be sufficient)
-   - Choose a datacenter region close to your target audience
-   - Add your SSH key or create a new one
-
-3. Once your Droplet is created, you can either use SSH or the DigitalOcean console:
-   - To use SSH:
-
-```
-ssh root@your_droplet_ip
-```
-
-   - To use the DigitalOcean console:
-     - Go to your Droplet's page on DigitalOcean
-     - Click on "Access" in the left sidebar
-     - Click on "Launch Droplet Console" to open a web-based console
-
-4. In the terminal or console, update the system and install required packages:
-
-```
-sudo apt update && sudo apt upgrade -y
-sudo apt install python3-pip python3-venv git -y
-```
-
-5. Clone the repository:
-
-```
-git clone https://github.com/Fruchtii/Discord-Open-AI-bot-fake-user.git
-cd Discord-Open-AI-bot-fake-user
-```
-
-6. Create a virtual environment and activate it:
-
-```
-python3 -m venv venv
-source venv/bin/activate
-```
-
-7. Install the required packages:
-
-```
-pip install -r requirements.txt
-```
-
-8. Create the config.json file and add your Discord token and OpenAI API key:
-
-```
-nano config.json
-```
-
-   Paste your configuration and save the file (Ctrl+X, then Y, then Enter).
-
-9. Install screen to run the bot in the background:
-
-```
-sudo apt install screen -y
-```
-
-10. Start a new screen session and run the bot:
-
-```
-screen -S discord-bot
+```bash
 python bot.py
 ```
 
-11. Detach from the screen session by pressing Ctrl+A, then D.
+---
 
-Your bot should now be running on the DigitalOcean Droplet. To reattach to the screen session later, use:
+## Discord Bot Setup
 
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications) and create a new application.
+2. Under the **Bot** tab, click **Add Bot** and copy the token into `config.json`.
+3. Under **Privileged Gateway Intents**, enable **Message Content Intent**.
+4. Under **OAuth2 → URL Generator**, select the `bot` scope and grant at minimum:
+   - Read Messages / View Channels
+   - Send Messages
+   - Read Message History
+5. Open the generated URL and add the bot to your server.
+
+---
+
+## Deployment
+
+### Server Setup (first time)
+
+These steps set the bot up as a systemd service so it restarts automatically.
+
+```bash
+# On your server
+sudo apt update && sudo apt install python3-pip python3-venv git -y
+
+git clone https://github.com/Fruchtii/discord-fake-user-bot.git
+cd discord-fake-user-bot
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
-screen -r discord-bot
+
+Fill in your `config.json`, then create a systemd service:
+
+```bash
+sudo nano /etc/systemd/system/discord-fake-user-bot.service
 ```
 
-To keep your bot running after you close the console, make sure to detach from the screen session instead of closing it.
+```ini
+[Unit]
+Description=Discord Fake User Bot
+After=network.target
 
-Note: When using the DigitalOcean console, you may experience occasional disconnects. If this happens, simply reconnect and reattach to the screen session to check on your bot.
+[Service]
+User=YOUR_LINUX_USER
+WorkingDirectory=/home/YOUR_LINUX_USER/discord-fake-user-bot
+ExecStart=/home/YOUR_LINUX_USER/discord-fake-user-bot/venv/bin/python bot.py
+Restart=always
+RestartSec=5
 
-<h2>Contributing</h2>
+[Install]
+WantedBy=multi-user.target
+```
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable discord-fake-user-bot
+sudo systemctl start discord-fake-user-bot
+```
 
-<h2>License</h2>
+### Auto-Deploy with GitHub Actions
 
-MIT (https://choosealicense.com/licenses/mit/)
+Every push to `main` automatically deploys to your server. Add these secrets in your repo under **Settings → Secrets and variables → Actions**:
+
+| Secret | Value |
+|---|---|
+| `SSH_HOST` | Your server's IP or hostname |
+| `SSH_USER` | Linux user on the server |
+| `SSH_PRIVATE_KEY` | Private SSH key with access to the server |
+| `SSH_PORT` | SSH port (optional, defaults to 22) |
+| `DEPLOY_PATH` | Absolute path to the bot directory on the server |
+
+Once the secrets are set, push to `main` and the bot redeploys automatically.
+
+---
+
+## Contributing
+
+Pull requests are welcome. For major changes, open an issue first.
+
+## License
+
+[MIT](LICENSE)
