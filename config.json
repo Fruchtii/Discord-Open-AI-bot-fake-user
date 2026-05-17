@@ -1,4 +1,6 @@
-discord.py==2.5.0
-openai==1.63.2
-google-generativeai>=0.8.0
-python-dotenv==0.19.2
+{
+  "discord_token": "YOUR_DISCORD_BOT_TOKEN",
+  "provider": "gemini",
+  "openai_api_key": "YOUR_OPENAI_API_KEY",
+  "gemini_api_key": "YOUR_GEMINI_API_KEY"
+}
